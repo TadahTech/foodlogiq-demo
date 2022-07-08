@@ -1,0 +1,24 @@
+{
+  // derived. Internal ID of  event
+  "id": "ljadfj",
+  // derived. datetime the  event is created
+  "createdAt": "2020-12-29T14:41:31.123Z",
+  // derived. id of the user  who created the event
+  "createdBy": "<userid>",
+  // derived. False when  created. True when deleted.
+  "isDeleted": false,
+  // required. valid entries  are shipping and receiving
+  "type": "shipping",
+  "contents": [
+    {
+      // required. Global Trade  Item Number. 14-digit number.
+      "gtin": "1234",
+      // required. any value. GTIN  + Lot are a compound identifier
+      "lot": "adffda",
+      // optional. date value
+      "bestByDate": "2021-01-13",
+      // optional. date value
+      "expirationDate": "2021-01-17"
+    }
+  ]
+}

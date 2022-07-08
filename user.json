@@ -1,0 +1,12 @@
+[
+  {
+    "token": "74edf612f393b4eb01fbc2c29dd96671",
+    "name": "Acme",
+    "user_id": 12345
+  },
+  {
+    "token": "d88b4b1e77c70ba780b56032db1c259b",
+    "name": "Ajax",
+    "user_id": 98765
+  }
+]
