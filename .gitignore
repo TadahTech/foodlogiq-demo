@@ -9,5 +9,3 @@ gen
 build/
 local.env
 coverage.out
-
-cmd/test
