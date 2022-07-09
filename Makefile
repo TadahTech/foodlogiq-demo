@@ -11,10 +11,12 @@ help:
 	@echo '    make init                Init the project'
 	@echo '    make build               Compile the project'
 	@echo '    make run                 Run service'
-	@echo '    make docker_build        Docker build'
-	@echo '    make docker_run          Docker run'
+	@echo '    make docker-build        Docker build'
+	@echo '    make docker-run          Docker run'
 	@echo '    make mocks               Generate mocks'
 	@echo '    make test                Run tests on a compiled project'
+	@echo '    make compose             docker-compose build and up in a detached state'
+	@echo '    make run-demo        	compose the app, and then run the 4 test REST requests'
 	@echo
 
 .PHONY: deps
@@ -46,12 +48,12 @@ all: init test build
 run:
 	go run cmd/$(PROJECT_NAME)/main.go
 
-.PHONY: docker_build
-docker_build:
+.PHONY: docker-build
+docker-build:
 	docker build -t $(DOCKER_NAME):$(VERSION) .
 
-.PHONY: docker_run
-docker_run:
+.PHONY: docker-run
+docker-run:
  	docker run -p 8000:8000 $(DOCKER_NAME)
 
 .PHONY: mocks
@@ -61,4 +63,8 @@ mocks:
 .PHONY: compose
 compose:
 	docker-compose build && docker-compose up --detach
+
+.PHONY: run-demo
+run-demo: compose
+	go run cmd/test/main.go
 
