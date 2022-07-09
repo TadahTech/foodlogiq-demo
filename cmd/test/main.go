@@ -20,6 +20,8 @@ var (
 
 func main() {
 	initLogging("debug")
+	fmt.Println("-=-=-=-=-=-=-=-=-=-=-= CREATE EVENT -=-=-=-=-=-=-=-=-=-=-=")
+	createEvent()
 	fmt.Println("-=-=-=-=-=-=-=-=-=-=-= GET EVENT -=-=-=-=-=-=-=-=-=-=-=")
 	getEvent()
 	fmt.Println("-=-=-=-=-=-=-=-=-=-=-= LIST EVENTS -=-=-=-=-=-=-=-=-=-=-=")
