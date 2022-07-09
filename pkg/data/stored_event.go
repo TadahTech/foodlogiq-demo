@@ -73,7 +73,7 @@ func createEventFromStored(e *storedEvent) *model.Event {
 		CreatedAt: e.CreatedAt.Format(time.RFC3339),
 		IsDeleted: e.IsDeleted,
 		CreatedBy: e.CreatedBy,
-		ID:        e.ID.String(),
+		ID:        e.ID.Hex(),
 		Type:      e.Type,
 	}
 

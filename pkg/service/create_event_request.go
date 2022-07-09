@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -19,13 +20,14 @@ func (rs *RestServer) createEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if valErr := v.ValidateStruct(&event, v.Field(&event.Type, v.Required, v.In("shipping", "receiving"))); valErr != nil {
-		http.Error(w, "invalid type", http.StatusBadRequest)
+	if valErr := v.ValidateStruct(event,
+		v.Field(&event.Type, v.Required, v.In("shipping", "receiving"))); valErr != nil {
+		http.Error(w, fmt.Sprintf("invalid type %v", valErr.Error()), http.StatusBadRequest)
 		return
 	}
 
-	if valErr := v.Validate(&event.Contents, v.By(validateContents)); valErr != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+	if valErr := v.Validate(event.Contents, v.By(validateContents)); valErr != nil {
+		http.Error(w, fmt.Sprintf("content is invalid: %v", valErr.Error()), http.StatusBadRequest)
 		return
 	}
 
@@ -35,7 +37,7 @@ func (rs *RestServer) createEvent(w http.ResponseWriter, r *http.Request) {
 	event.CreatedBy = user.UserID
 	event.CreatedAt = time.Now().Format(time.RFC3339)
 
-	err = rs.db.CreateEvent(event)
+	id, err := rs.db.CreateEvent(event)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -43,6 +45,6 @@ func (rs *RestServer) createEvent(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	jsonResp, _ := json.Marshal(map[string]interface{}{"event_id": event.ID})
+	jsonResp, _ := json.Marshal(map[string]interface{}{"event_id": id})
 	w.Write(jsonResp)
 }

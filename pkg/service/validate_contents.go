@@ -2,6 +2,8 @@ package service
 
 import (
 	"errors"
+	"fmt"
+	"reflect"
 	"time"
 
 	"github.com/TadahTech/foodlogiq-demo/pkg/model"
@@ -11,7 +13,7 @@ func validateContents(value interface{}) error {
 	c, ok := value.([]*model.Content)
 
 	if !ok {
-		return errors.New("contents malformed")
+		return fmt.Errorf("contents malformed got %v", reflect.TypeOf(value))
 	}
 
 	if len(c) == 0 {

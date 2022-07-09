@@ -9,7 +9,7 @@ import (
 	"github.com/opentracing/opentracing-go"
 )
 
-func (d dataStore) CreateEvent(event *model.Event) error {
+func (d dataStore) CreateEvent(event *model.Event) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -19,16 +19,14 @@ func (d dataStore) CreateEvent(event *model.Event) error {
 	sc, err := createStoredEvent(event)
 
 	if err != nil {
-		return fmt.Errorf("[Mongo] CreateEvent#createStoredEvent error: %w", err)
+		return "", fmt.Errorf("[Mongo] CreateEvent#createStoredEvent error: %w", err)
 	}
 
 	_, err = d.collection.InsertOne(ctx, sc)
 
 	if err != nil {
-		return fmt.Errorf("[Mongo] CreateEvent#insert error: %w", err)
+		return "", fmt.Errorf("[Mongo] CreateEvent#insert error: %w", err)
 	}
 
-	event.ID = sc.ID.String()
-
-	return nil
+	return sc.ID.Hex(), nil
 }

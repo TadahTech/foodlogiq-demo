@@ -9,7 +9,7 @@ import (
 
 type RestServer struct {
 	db     data.EventsMongoDB
-	router *mux.Router
+	Router *mux.Router
 }
 
 func NewServer(db data.EventsMongoDB) *RestServer {
@@ -17,7 +17,7 @@ func NewServer(db data.EventsMongoDB) *RestServer {
 
 	server := &RestServer{
 		db:     db,
-		router: r,
+		Router: r,
 	}
 
 	r.HandleFunc("/health", healthCheck)
@@ -26,16 +26,7 @@ func NewServer(db data.EventsMongoDB) *RestServer {
 	r.HandleFunc("/event/all", server.listEvents).Methods(http.MethodGet)
 	r.HandleFunc("/event", server.deleteEvent).Methods(http.MethodDelete)
 
-	r.Use(func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			_, err := userFromBearer(r)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusUnauthorized)
-				return
-			}
-			next.ServeHTTP(w, r)
-		})
-	})
+	r.Use(tokenMw)
 
 	return server
 }

@@ -23,9 +23,6 @@ var (
 		Name:   "98765 ",
 		Token:  "d88b4b1e77c70ba780b56032db1c259b",
 	}
-	user = []*model.User{
-		acme, ajax,
-	}
 	usersByToken = map[string]*model.User{
 		acme.Token: acme,
 		ajax.Token: ajax,
@@ -34,7 +31,12 @@ var (
 
 func userFromBearer(req *http.Request) (*model.User, error) {
 	reqToken := req.Header.Get("Authorization")
-	splitToken := strings.Split(reqToken, "Bearer")
+
+	if len(reqToken) == 0 {
+		return nil, errors.New("no Authorization token")
+	}
+
+	splitToken := strings.Split(reqToken, "Bearer ")
 
 	if len(splitToken) != 2 {
 		return nil, errors.New("bearer token malformed")
@@ -45,10 +47,21 @@ func userFromBearer(req *http.Request) (*model.User, error) {
 		return nil, errors.New("token empty")
 	}
 
-	user := usersByToken[token]
-	if user == nil {
+	u := usersByToken[token]
+	if u == nil {
 		return nil, errors.New("no user found for that token")
 	}
 
-	return user, nil
+	return u, nil
+}
+
+func tokenMw(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, err := userFromBearer(r)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
 }

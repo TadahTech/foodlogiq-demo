@@ -13,16 +13,14 @@ type EventsMongoDB struct {
 }
 
 // CreateEvent provides a mock function with given fields: event
-func (_m *EventsMongoDB) CreateEvent(event *model.Event) (*model.Event, error) {
+func (_m *EventsMongoDB) CreateEvent(event *model.Event) (string, error) {
 	ret := _m.Called(event)
 
-	var r0 *model.Event
-	if rf, ok := ret.Get(0).(func(*model.Event) *model.Event); ok {
+	var r0 string
+	if rf, ok := ret.Get(0).(func(*model.Event) string); ok {
 		r0 = rf(event)
 	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*model.Event)
-		}
+		r0 = ret.Get(0).(string)
 	}
 
 	var r1 error
@@ -35,13 +33,13 @@ func (_m *EventsMongoDB) CreateEvent(event *model.Event) (*model.Event, error) {
 	return r0, r1
 }
 
-// DeleteEvent provides a mock function with given fields: eventId
-func (_m *EventsMongoDB) DeleteEvent(eventId string) error {
-	ret := _m.Called(eventId)
+// DeleteEvent provides a mock function with given fields: eventId, createdBy
+func (_m *EventsMongoDB) DeleteEvent(eventId string, createdBy int) error {
+	ret := _m.Called(eventId, createdBy)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(string) error); ok {
-		r0 = rf(eventId)
+	if rf, ok := ret.Get(0).(func(string, int) error); ok {
+		r0 = rf(eventId, createdBy)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -72,22 +70,22 @@ func (_m *EventsMongoDB) GetAllEvents(owner string) ([]*model.Event, error) {
 	return r0, r1
 }
 
-// GetEvent provides a mock function with given fields: eventId
-func (_m *EventsMongoDB) GetEvent(eventId string) ([]*model.Event, error) {
-	ret := _m.Called(eventId)
+// GetEvent provides a mock function with given fields: eventId, createdBy
+func (_m *EventsMongoDB) GetEvent(eventId string, createdBy int) (*model.Event, error) {
+	ret := _m.Called(eventId, createdBy)
 
-	var r0 []*model.Event
-	if rf, ok := ret.Get(0).(func(string) []*model.Event); ok {
-		r0 = rf(eventId)
+	var r0 *model.Event
+	if rf, ok := ret.Get(0).(func(string, int) *model.Event); ok {
+		r0 = rf(eventId, createdBy)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]*model.Event)
+			r0 = ret.Get(0).(*model.Event)
 		}
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(string) error); ok {
-		r1 = rf(eventId)
+	if rf, ok := ret.Get(1).(func(string, int) error); ok {
+		r1 = rf(eventId, createdBy)
 	} else {
 		r1 = ret.Error(1)
 	}

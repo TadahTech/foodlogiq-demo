@@ -17,9 +17,9 @@ const (
 )
 
 type EventsMongoDB interface {
-	CreateEvent(event *model.Event) error
-	DeleteEvent(eventId string) error
-	GetEvent(eventId string) (*model.Event, error)
+	CreateEvent(event *model.Event) (string, error)
+	DeleteEvent(eventId string, createdBy int) error
+	GetEvent(eventId string, createdBy int) (*model.Event, error)
 	GetAllEvents(owner string) ([]*model.Event, error)
 }
 
@@ -29,7 +29,7 @@ type dataStore struct {
 }
 
 type EventsDatastore struct {
-	edb EventsMongoDB
+	EventsMongoDB
 }
 
 func NewDataStore(connection string) (*EventsDatastore, error) {
@@ -62,5 +62,5 @@ func NewDataStore(connection string) (*EventsDatastore, error) {
 		collection: collection,
 	}
 
-	return &EventsDatastore{edb: eventsDB}, nil
+	return &EventsDatastore{eventsDB}, nil
 }
