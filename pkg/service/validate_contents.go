@@ -2,8 +2,9 @@ package service
 
 import (
 	"errors"
-	"github.com/TadahTech/foodlogiq-demo/pkg/model"
 	"time"
+
+	"github.com/TadahTech/foodlogiq-demo/pkg/model"
 )
 
 func validateContents(value interface{}) error {

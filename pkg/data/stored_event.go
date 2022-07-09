@@ -2,9 +2,10 @@ package data
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/TadahTech/foodlogiq-demo/pkg/model"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"time"
 )
 
 // storedEvent BSON representation of a JSON Event with primitive types and ID

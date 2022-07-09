@@ -2,9 +2,10 @@ package service
 
 import (
 	"errors"
-	"github.com/TadahTech/foodlogiq-demo/pkg/model"
 	"net/http"
 	"strings"
+
+	"github.com/TadahTech/foodlogiq-demo/pkg/model"
 )
 
 // So this is the only thing I questioned, but for the sake of a demo I think it's fine.

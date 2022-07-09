@@ -3,9 +3,10 @@ package data
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"github.com/TadahTech/foodlogiq-demo/pkg/model"
 	"github.com/opentracing/opentracing-go"
-	"time"
 )
 
 func (d dataStore) CreateEvent(event *model.Event) error {

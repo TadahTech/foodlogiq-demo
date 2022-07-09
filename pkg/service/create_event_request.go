@@ -2,9 +2,10 @@ package service
 
 import (
 	"encoding/json"
-	"github.com/TadahTech/foodlogiq-demo/pkg/model"
 	"net/http"
 	"time"
+
+	"github.com/TadahTech/foodlogiq-demo/pkg/model"
 
 	v "github.com/go-ozzo/ozzo-validation"
 )

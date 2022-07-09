@@ -3,10 +3,11 @@ package data
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"github.com/TadahTech/foodlogiq-demo/pkg/model"
 	"github.com/opentracing/opentracing-go"
 	"go.mongodb.org/mongo-driver/bson"
-	"time"
 )
 
 func (d dataStore) GetEvent(eventId string) (*model.Event, error) {

@@ -3,10 +3,11 @@ package data
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"github.com/opentracing/opentracing-go"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"time"
 )
 
 func (d dataStore) DeleteEvent(eventId string) error {

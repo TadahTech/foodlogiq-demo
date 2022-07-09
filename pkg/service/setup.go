@@ -1,9 +1,10 @@
 package service
 
 import (
+	"net/http"
+
 	"github.com/TadahTech/foodlogiq-demo/pkg/data"
 	"github.com/gorilla/mux"
-	"net/http"
 )
 
 type RestServer struct {
