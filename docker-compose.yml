@@ -1,0 +1,24 @@
+version: '3.3'
+services:
+  mongodb:
+    container_name: "fld-mongo"
+    image: mongo:latest
+    env_file:
+      - local.env
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data_container:/data/db
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    env_file:
+      - local.env
+    depends_on:
+      - 'mongodb'
+    volumes:
+      - '.:/app'
+
+volumes:
+  mongodb_data_container:
