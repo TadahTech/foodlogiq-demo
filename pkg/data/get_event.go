@@ -8,6 +8,7 @@ import (
 	"github.com/TadahTech/foodlogiq-demo/pkg/model"
 	"github.com/opentracing/opentracing-go"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -19,9 +20,15 @@ func (d dataStore) GetEvent(eventId string, createdBy int) (*model.Event, error)
 	span, ctx := opentracing.StartSpanFromContext(ctx, "[Mongo] GetEvent")
 	defer span.Finish()
 
-	filter := bson.M{"_id": eventId, "created_by": createdBy, "is_deleted": false}
+	id, err := primitive.ObjectIDFromHex(eventId)
 
-	err := d.collection.FindOne(ctx, filter).Decode(&event)
+	if err != nil {
+		return nil, fmt.Errorf("[Mongo] GetEvent cannot create ID: %w", err)
+	}
+
+	filter := bson.M{"_id": id, "created_by": createdBy, "is_deleted": false}
+
+	err = d.collection.FindOne(ctx, filter).Decode(&event)
 
 	if err != nil {
 		if err == mongo.ErrNoDocuments {

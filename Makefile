@@ -33,7 +33,7 @@ init: tidy fmt vet lint
 
 .PHONY: test
 test: deps
-	go test -cover `go list ./internal/... && go list ./pkg/...` -coverprofile=coverage.out
+	go test -cover `go list ./pkg/...` -coverprofile=coverage.out
 
 .PHONY: build
 build:
@@ -54,6 +54,11 @@ docker_build:
 docker_run:
  	docker run -p 8000:8000 $(DOCKER_NAME)
 
+.PHONY: mocks
 mocks:
 	mockery --dir pkg --all --output pkg/mocks
+
+.PHONY: compose
+compose:
+	docker-compose build && docker-compose up --detach
 

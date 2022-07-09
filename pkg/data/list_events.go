@@ -15,7 +15,7 @@ func (d dataStore) GetAllEvents(owner string) ([]*model.Event, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	span, ctx := opentracing.StartSpanFromContext(ctx, "[Mongo] GetEvent")
+	span, ctx := opentracing.StartSpanFromContext(ctx, "[Mongo] GetAllEvents")
 	defer span.Finish()
 
 	resp, err := d.collection.Find(ctx, bson.M{"created_by": owner})

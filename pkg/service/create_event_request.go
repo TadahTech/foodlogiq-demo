@@ -7,11 +7,13 @@ import (
 	"time"
 
 	"github.com/TadahTech/foodlogiq-demo/pkg/model"
+	log "github.com/sirupsen/logrus"
 
 	v "github.com/go-ozzo/ozzo-validation"
 )
 
 func (rs *RestServer) createEvent(w http.ResponseWriter, r *http.Request) {
+	log.Info("Got create event")
 	var event *model.Event
 	err := decodeRequest(r, &event)
 

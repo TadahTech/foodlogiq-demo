@@ -28,6 +28,7 @@ COPY --from=alpine /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=gobuild /opt/build/foodlogiq-demo /opt/foodlogiq-demo
 
 WORKDIR /opt
+EXPOSE 8000
+
 ENTRYPOINT ["/opt/foodlogiq-demo"]
 
-EXPOSE 8000

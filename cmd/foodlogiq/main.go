@@ -1,27 +1,23 @@
 package main
 
 import (
-	"github.com/TadahTech/foodlogiq-demo/pkg/data"
-	"github.com/TadahTech/foodlogiq-demo/pkg/service"
-	"github.com/joho/godotenv"
-	log "github.com/sirupsen/logrus"
 	"net/http"
 	"os"
+
+	"github.com/TadahTech/foodlogiq-demo/pkg/data"
+	"github.com/TadahTech/foodlogiq-demo/pkg/service"
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {
-	err := godotenv.Load("local.env")
-	if err != nil {
-		log.Fatalf("Some error occured. Err: %s", err)
-		return
-	}
-
+	initLogging("info")
 	connectionString := os.Getenv("MONGO_CONNECTION_STRING")
 	if len(connectionString) == 0 {
 		log.Error("connection string is empty")
 		return
 	}
 
+	log.Info("Setting up data store")
 	db, err := data.NewDataStore(connectionString)
 
 	if err != nil {
@@ -29,9 +25,25 @@ func main() {
 		return
 	}
 
+	log.Info("Setting up rest server")
 	s := service.NewServer(db)
-	if err := http.ListenAndServe("localhost:8000", s.Router); err != nil {
+	log.Info("Serving HTTP server on port 8000")
+	if err := http.ListenAndServe(":8000", s.Router); err != nil {
 		log.WithError(err).Error("server error")
 		return
+	}
+}
+
+func initLogging(level string) {
+	log.SetOutput(os.Stdout)
+	log.SetFormatter(&log.JSONFormatter{})
+
+	switch level {
+	case "debug":
+		log.SetLevel(log.DebugLevel)
+	case "min":
+		log.SetLevel(log.ErrorLevel)
+	default:
+		log.SetLevel(log.InfoLevel)
 	}
 }
