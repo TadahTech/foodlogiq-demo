@@ -20,7 +20,7 @@ type EventsMongoDB interface {
 	CreateEvent(event *model.Event) (string, error)
 	DeleteEvent(eventId string, createdBy int) error
 	GetEvent(eventId string, createdBy int) (*model.Event, error)
-	GetAllEvents(owner string) ([]*model.Event, error)
+	GetAllEvents(owner int) ([]*model.Event, error)
 }
 
 type dataStore struct {

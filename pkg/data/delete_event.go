@@ -7,6 +7,7 @@ import (
 
 	"github.com/opentracing/opentracing-go"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -22,7 +23,13 @@ func (d dataStore) DeleteEvent(eventId string, createdBy int) error {
 		"$set": bson.D{{"is_deleted", true}},
 	}
 
-	filter := bson.M{"_id": eventId, "created_by": createdBy}
+	id, err := primitive.ObjectIDFromHex(eventId)
+
+	if err != nil {
+		return fmt.Errorf("[Mongo] DeleteEvent cannot create ID: %w", err)
+	}
+
+	filter := bson.M{"_id": id, "created_by": createdBy}
 	resp, err := d.collection.UpdateOne(ctx, filter, update, options.Update())
 
 	if err != nil {

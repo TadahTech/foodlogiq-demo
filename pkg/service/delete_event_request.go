@@ -25,6 +25,8 @@ func (rs *RestServer) deleteEvent(w http.ResponseWriter, r *http.Request) {
 	user, _ := userFromBearer(r)
 	err = rs.db.DeleteEvent(event.ID, user.UserID)
 
+	fmt.Println(user.UserID)
+
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			http.Error(w, "cannot find an event id and created_by match", http.StatusBadRequest)

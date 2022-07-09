@@ -48,11 +48,11 @@ func (_m *EventsMongoDB) DeleteEvent(eventId string, createdBy int) error {
 }
 
 // GetAllEvents provides a mock function with given fields: owner
-func (_m *EventsMongoDB) GetAllEvents(owner string) ([]*model.Event, error) {
+func (_m *EventsMongoDB) GetAllEvents(owner int) ([]*model.Event, error) {
 	ret := _m.Called(owner)
 
 	var r0 []*model.Event
-	if rf, ok := ret.Get(0).(func(string) []*model.Event); ok {
+	if rf, ok := ret.Get(0).(func(int) []*model.Event); ok {
 		r0 = rf(owner)
 	} else {
 		if ret.Get(0) != nil {
@@ -61,7 +61,7 @@ func (_m *EventsMongoDB) GetAllEvents(owner string) ([]*model.Event, error) {
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(string) error); ok {
+	if rf, ok := ret.Get(1).(func(int) error); ok {
 		r1 = rf(owner)
 	} else {
 		r1 = ret.Error(1)
